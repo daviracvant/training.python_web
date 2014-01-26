@@ -32,3 +32,8 @@ bin
 build
 include
 lib
+.idea/scopes/scope_settings.xml
+
+.idea/training.python_web.iml
+
+.idea/workspace.xml
