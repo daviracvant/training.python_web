@@ -19,7 +19,7 @@ Think you should know:
         - Codecs
 
 Source Code:
-    When everything is ready. You can simply run python.py. If would take a couple of seconds to complete because I have over 20 different regions
+    When everything is ready. You can simply run python yt.py. If would take a couple of seconds to complete because I have over 20 different regions
     listed.
 
 Output Example:
