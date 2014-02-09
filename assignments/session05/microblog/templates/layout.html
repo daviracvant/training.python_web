@@ -1,13 +1,24 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Microblog!</title>
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css">
-  </head>
-  <body>
-    <h1>My Microblog</h1>
-    <div class="content">
+</head>
+<body>
+<h1>My Microblog
+    {% if not session.logged_in %}
+    <a href="{{ url_for('login') }}" style="float:right">log in</a>
+    {% else %}
+    <a href="{{ url_for('logout') }}" style="float:right">log out</a>
+    {% endif %}
+</h1>
+
+<div class="content">
+    {% for message in get_flashed_messages() %}
+    <div class=flash>{{ message }}</div>
+    {% endfor %}
+
     {% block body %}{% endblock %}
-    </div>
-  </body>
+</div>
+</body>
 </html>

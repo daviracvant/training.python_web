@@ -3,7 +3,6 @@ import tempfile
 import unittest
 import microblog
 
-
 class MicroblogTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -71,6 +70,42 @@ class MicroblogTestCase(unittest.TestCase):
         self.assertFalse('No entries here so far' in actual)
         self.assertTrue('Hello' in actual)
         self.assertTrue('This is a post' in actual)
+
+    def test_login_right_credential(self):
+        #post request with the right credential.
+        actual = self.client.post('/login', data=dict(
+            username="admin",
+            password="google"
+        ), follow_redirects=True).data
+
+        self.assertFalse("log in" in actual)
+        self.assertTrue("log out" in actual)
+        self.assertTrue("You are logged in as admin" in actual)
+
+    def test_login_wrong_credential(self):
+        #send a post request to login. pretending to be a form.
+        actual = self.client.post("/login", data=dict(
+            username='google',
+            password='google',
+        ), follow_redirects=False).data
+
+        self.assertFalse("You are logged in as google" in actual)
+        self.assertTrue("Invalid Credential." in actual)
+
+    def test_logout(self):
+        #first we need to login.
+        actual = self.client.post('/login', data=dict(
+            username="admin",
+            password="google"
+        ), follow_redirects=True).data
+        #see if we really logged in
+        self.assertTrue("You are logged in as admin" in actual)
+        #logout.
+        out = self.client.get('/logout', follow_redirects=True).data
+
+        self.assertFalse("log out" in out)
+        self.assertTrue("log in" in out)
+        self.assertTrue("You have logged out" in out)
 
 
 if __name__ == '__main__':

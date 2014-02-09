@@ -1,10 +1,4 @@
-from flask import Flask
-from flask import g
-from flask import render_template
-from flask import abort
-from flask import request
-from flask import url_for
-from flask import redirect
+from flask import Flask, g, render_template, request, url_for, redirect, flash, session
 import sqlite3
 from contextlib import closing
 
@@ -51,6 +45,16 @@ def get_all_entries():
     return [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
 
 
+#a function to check credential.
+def is_logged_in(username, password):
+    log_in = True
+    if username != app.config['USERNAME']:
+        log_in = False
+    elif password != app.config['PASSWORD']:
+        log_in = False
+    return log_in
+
+
 @app.route('/')
 def show_entries():
     entries = get_all_entries()
@@ -61,10 +65,31 @@ def show_entries():
 def add_entry():
     try:
         write_entry(request.form['title'], request.form['text'])
-    except sqlite3.Error:
-        abort(500)
+    except sqlite3.Error as db_error:
+        flash("Error occurs: %s" % db_error.args[0])
+    else:
+        flash("New entry posted")
     return redirect(url_for('show_entries'))
 
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == "POST":
+        logged_in = is_logged_in(request.form['username'], request.form['password'])
+        if logged_in:
+            session['logged_in'] = True
+            flash("You are logged in as %s" % request.form['username'])
+            return redirect(url_for('show_entries'))
+        else:
+            flash("Invalid Credential.")
+    return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    session.pop("logged_in", None)
+    flash("You have logged out")
+    return redirect(url_for('show_entries'))
 
 if __name__ == '__main__':
     app.run(debug=True)
