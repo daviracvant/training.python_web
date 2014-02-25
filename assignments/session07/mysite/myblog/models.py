@@ -20,3 +20,7 @@ class Category(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    #plurial for category
+    class Meta:
+        verbose_name_plural = "categories"
