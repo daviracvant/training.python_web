@@ -5,6 +5,7 @@
   <head>
     <title>My Django Blog</title>
     {% bootstrap_css %}
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     {% bootstrap_javascript %}
 
     <link type="text/css" rel="stylesheet" href="/static/django_blog.css">
@@ -14,10 +15,13 @@
     <div id="header">
       <ul id="control-bar">
       {% if user.is_authenticated %}
+        <li><a href="/">Home</a></li>
+        <li><a href="/post_add">Add Post</a></li>
         {% if user.is_staff %}<li><a href="{% url 'admin:index' %}">admin</a></li>{% endif %}
         <li><a href="{% url 'logout' %}">logout</a></li>
       {% else %}
-        <li><a href="{% url 'login' %}">login</a></li>
+        <li><a href="{% url 'login' %}">Log in</a></li>
+        <li><a href="/accounts/register">Register</a></li>
       {% endif %}
       </ul>
     </div>
