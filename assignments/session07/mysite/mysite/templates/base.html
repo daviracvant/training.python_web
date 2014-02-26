@@ -1,10 +1,16 @@
 <!DOCTYPE html>
+{% load bootstrap3 %}
+
 <html>
   <head>
     <title>My Django Blog</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
     <link type="text/css" rel="stylesheet" href="/static/django_blog.css">
   </head>
   <body>
+    {% bootstrap_messages %}
     <div id="header">
       <ul id="control-bar">
       {% if user.is_authenticated %}
