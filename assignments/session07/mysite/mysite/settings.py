@@ -97,3 +97,4 @@ ACCOUNT_ACTIVATION_DAYS = 7
 EMAIL_HOST = 'localhost'
 DEFAULT_FROM_EMAIL = 'webmaster@localhost'
 AUTH_PROFILE_MODULE = 'registration.RegistrationProfile'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
